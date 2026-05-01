@@ -1,0 +1,383 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand colors - ABHM baseline verified */
+    --saffron: 24 100% 50%;          /* #FF6B00 */
+    --saffron-light: 30 100% 60%;    /* #FF9933 */
+    --saffron-pale: 33 100% 95%;
+    --navy: 213 52% 15%;             /* #0B1F3A - corrected from 213 70% 14% */
+    --navy-mid: 213 50% 22%;         /* Adjusted for consistency */
+    --navy-light: 213 50% 26%;
+    --gold: 32 51% 49%;              /* #C9942A - corrected from 38 65% 48% */
+    --gold-light: 45 90% 61%;        /* #F5C842 */
+    --green-flag: 121 90% 27%;       /* #138808 - corrected from 145 86% 28% */
+    --off-white: 36 25% 97%;
+    --text-dark: 240 33% 14%;
+    --text-muted: 220 9% 46%;
+    --border-light: 24 100% 50% / 0.15;
+    --border-mid: 24 100% 50% / 0.3;
+
+    /* Semantic tokens */
+    --background: 0 0% 100%;
+    --foreground: 240 33% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 33% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 33% 14%;
+
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 213 52% 15%;          /* Corrected navy baseline */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 36 25% 97%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 32 51% 49%;              /* Corrected gold baseline */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 24 100% 50% / 0.15;
+    --input: 220 13% 91%;
+    --ring: 24 100% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 213 52% 15%;  /* Corrected navy baseline */
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 24 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 50% 22%;      /* Corrected navy-mid */
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 213 50% 22%;      /* Corrected navy-mid */
+    --sidebar-ring: 24 100% 50%;
+
+    /* Gradient tokens for hero & dark sections */
+    --gradient-hero-dark: 213 52% 8%;   /* Deep navy for dark gradients */
+    --gradient-start: 24 100% 50%;      /* Saffron for gradient starts */
+    --gradient-mid: 32 51% 49%;         /* Gold for gradient mids */
+    --gradient-end: 45 90% 61%;         /* Light gold for gradient ends */
+  }
+
+  .dark {
+    --background: 213 52% 8%;          /* Adjusted for corrected navy baseline */
+    --foreground: 0 0% 95%;
+    --card: 213 50% 12%;               /* Adjusted for corrected navy baseline */
+    --card-foreground: 0 0% 95%;
+    --popover: 213 50% 12%;            /* Adjusted for corrected navy baseline */
+    --popover-foreground: 0 0% 95%;
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 213 50% 22%;          /* Corrected navy-mid */
+    --secondary-foreground: 0 0% 95%;
+    --muted: 213 50% 18%;              /* Adjusted for corrected navy baseline */
+    --muted-foreground: 213 20% 60%;
+    --accent: 32 51% 49%;              /* Corrected gold baseline */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 213 50% 22%;             /* Corrected navy-mid */
+    --input: 213 50% 22%;              /* Corrected navy-mid */
+    --ring: 24 100% 50%;
+    --sidebar-background: 213 52% 8%;  /* Adjusted for corrected navy baseline */
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 24 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 50% 16%;     /* Adjusted for corrected navy baseline */
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 213 50% 18%;     /* Adjusted for corrected navy baseline */
+    --sidebar-ring: 24 100% 50%;
+
+    /* Gradient tokens for hero & dark sections (dark mode) */
+    --gradient-hero-dark: 213 52% 4%;   /* Darker navy for dark gradients */
+    --gradient-start: 24 100% 55%;      /* Brighter saffron for dark mode */
+    --gradient-mid: 32 51% 55%;         /* Brighter gold for dark mode */
+    --gradient-end: 45 90% 70%;         /* Lighter gold for dark mode */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+  .font-devanagari {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+}
+
+@layer utilities {
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hero section gradient override — prevent white background contamination */
+  .hero-section * {
+    --tw-gradient-from: initial !important;
+    --tw-gradient-from-position: initial !important;
+  }
+
+  /* High-contrast gradient utilities */
+  .gradient-saffron-gold {
+    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-mid)) 50%, hsl(var(--gradient-end)) 100%);
+  }
+
+  .gradient-gold-saffron {
+    background: linear-gradient(135deg, hsl(var(--gradient-mid)) 0%, hsl(var(--gradient-end)) 50%, hsl(var(--gradient-start)) 100%);
+  }
+
+  .gradient-text-saffron-gold {
+    background: linear-gradient(90deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-mid)) 50%, hsl(var(--gradient-end)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(90deg, hsl(var(--gradient-mid)) 0%, hsl(var(--gradient-end)) 50%, hsl(var(--gradient-start)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* High contrast shadow for gradient text */
+  .shadow-gradient-text {
+    filter: drop-shadow(0 4px 12px rgba(255, 107, 0, 0.5)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+  }
+
+  /* Touch target utilities (44x44px minimum) */
+  .btn-touch {
+    @apply min-h-11 min-w-11;
+  }
+
+  /* Responsive touch-friendly link */
+  .touch-link {
+    @apply min-h-10 min-w-10 inline-flex items-center justify-center;
+  }
+
+  /* Responsive text sizing utilities */
+  .text-responsive-lg {
+    @apply text-2xl sm:text-3xl md:text-4xl;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-sm {
+    @apply text-xs sm:text-sm;
+  }
+
+  /* Additional responsive utilities for common patterns */
+  .gap-responsive-tight {
+    @apply gap-3 sm:gap-4 md:gap-6;
+  }
+
+  .gap-responsive-medium {
+    @apply gap-4 sm:gap-6 md:gap-8;
+  }
+
+  .gap-responsive-large {
+    @apply gap-6 sm:gap-8 lg:gap-12;
+  }
+
+  .p-responsive-sm {
+    @apply p-3 sm:p-4 md:p-6;
+  }
+
+  .p-responsive-md {
+    @apply p-4 sm:p-6 md:p-8;
+  }
+
+  .p-responsive-lg {
+    @apply p-6 sm:p-8 lg:p-12;
+  }
+
+  /* Responsive padding for form fields */
+  .form-input-responsive {
+    @apply px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-2 text-sm sm:text-base;
+  }
+
+  /* Responsive heading utilities */
+  .heading-h1-responsive {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  .heading-h2-responsive {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  .heading-h3-responsive {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+}
+
+/* News ticker animation — fixed 100vw bug, responsive duration */
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.ticker-track {
+  animation: ticker 60s linear infinite;
+}
+
+@media (min-width: 640px) {
+  .ticker-track {
+    animation: ticker 45s linear infinite;
+  }
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Flag wave animation — GPU-accelerated via transform only */
+@keyframes flagWave {
+  0%   { transform: perspective(800px) rotateY(0deg) scaleX(1); }
+  25%  { transform: perspective(800px) rotateY(-4deg) scaleX(0.97); }
+  50%  { transform: perspective(800px) rotateY(0deg) scaleX(1); }
+  75%  { transform: perspective(800px) rotateY(4deg) scaleX(0.97); }
+  100% { transform: perspective(800px) rotateY(0deg) scaleX(1); }
+}
+
+.flag-wave {
+  animation: flagWave 6s ease-in-out infinite;
+}
+
+/* Hero gradient mesh animation */
+@keyframes meshMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-mesh {
+  background: linear-gradient(
+    -45deg,
+    #0B1F3A,
+    #122B52,
+    rgba(255,107,0,0.15),
+    #0B1F3A,
+    rgba(201,148,42,0.08)
+  );
+  background-size: 400% 400%;
+  animation: meshMove 18s ease infinite;
+}
+
+/* Dark mode: deeper, richer hero with more saffron glow */
+.dark .hero-mesh {
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,107,0,0.22), transparent 65%),
+    radial-gradient(ellipse 40% 60% at 10% 60%, rgba(255,200,50,0.07), transparent 55%),
+    linear-gradient(135deg, #040D1A 0%, #080F1A 60%, #030B16 100%);
+  background-size: 100% 100%;
+  animation: none;
+}
+
+/* SVG flag fallback — crisp rendering at all sizes */
+.party-flag-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Quote carousel fade */
+@keyframes quoteFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.quote-fade-in {
+  animation: quoteFadeIn 0.5s ease-out forwards;
+}
+
+/* Timeline pulse dot */
+@keyframes timelinePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,0,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(255,107,0,0); }
+}
+
+.timeline-dot-pulse {
+  animation: timelinePulse 2s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .flag-wave,
+  .hero-mesh,
+  .quote-fade-in,
+  .timeline-dot-pulse,
+  .ticker-track {
+    animation: none !important;
+  }
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─── Visual Editor Mode ─────────────────────────────────────── */
+body.edit-mode-active {
+  padding-top: 52px !important;
+}
+
+.editable-element {
+  position: relative;
+  transition: outline-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.editable-element:hover {
+  outline: 2px dashed rgba(255, 107, 0, 0.5) !important;
+  outline-offset: 2px;
+  cursor: pointer;
+}
+
+.editable-element.editable-selected {
+  outline: 2px solid #FF6B00 !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+}
+
+.editable-indicator {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.editable-element:hover .editable-indicator,
+.editable-selected .editable-indicator {
+  opacity: 1;
+}
+
+/* When edit panel is open, give content area some right margin */
+body.edit-mode-active .edit-panel-offset {
+  margin-right: 340px;
+  transition: margin-right 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editable-element,
+  .editable-indicator {
+    transition: none !important;
+  }
+}

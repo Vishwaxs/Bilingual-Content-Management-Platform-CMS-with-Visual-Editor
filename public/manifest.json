@@ -1,0 +1,24 @@
+{
+  "name": "ABHM UP",
+  "short_name": "ABHM",
+  "description": "Akhil Bharat Hindu Mahasabha — Uttar Pradesh Official Website",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1F3A",
+  "theme_color": "#FF6B00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["politics", "news"],
+  "lang": "en"
+}
