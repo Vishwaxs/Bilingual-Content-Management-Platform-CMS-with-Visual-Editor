@@ -47,6 +47,12 @@ describe('cms hardening guards', () => {
   it('enforces role-section permissions', () => {
     expect(canAccessSection('editor', 'news')).toBe(true);
     expect(canAccessSection('editor', 'documents')).toBe(false);
-    expect(canAccessSection('admin', 'settings')).toBe(true);
+    // Settings is SuperAdmin-only; admins must not reach it.
+    expect(canAccessSection('admin', 'settings')).toBe(false);
+    expect(canAccessSection('superadmin', 'settings')).toBe(true);
+  });
+
+  it('denies access when role is missing', () => {
+    expect(canAccessSection(null, 'news')).toBe(false);
   });
 });
