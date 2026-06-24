@@ -45,8 +45,18 @@ describe('cms hardening guards', () => {
   });
 
   it('enforces role-section permissions', () => {
+    // Editors are limited to content sections only.
     expect(canAccessSection('editor', 'news')).toBe(true);
     expect(canAccessSection('editor', 'documents')).toBe(false);
-    expect(canAccessSection('admin', 'settings')).toBe(true);
+
+    // Admins manage standard CMS content but NOT system settings.
+    expect(canAccessSection('admin', 'documents')).toBe(true);
+    expect(canAccessSection('admin', 'settings')).toBe(false);
+
+    // Settings is a SuperAdmin-only section.
+    expect(canAccessSection('superadmin', 'settings')).toBe(true);
+
+    // A null/unauthenticated role can access nothing.
+    expect(canAccessSection(null, 'news')).toBe(false);
   });
 });
