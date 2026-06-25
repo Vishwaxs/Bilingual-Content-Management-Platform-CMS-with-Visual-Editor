@@ -47,6 +47,9 @@ describe('cms hardening guards', () => {
   it('enforces role-section permissions', () => {
     expect(canAccessSection('editor', 'news')).toBe(true);
     expect(canAccessSection('editor', 'documents')).toBe(false);
-    expect(canAccessSection('admin', 'settings')).toBe(true);
+    // Settings is a SuperAdmin-only section (see SECTION_ACCESS and the
+    // "SuperAdmin-only routes" group in App.tsx); admins must be denied.
+    expect(canAccessSection('admin', 'settings')).toBe(false);
+    expect(canAccessSection('superadmin', 'settings')).toBe(true);
   });
 });
