@@ -47,6 +47,10 @@ describe('cms hardening guards', () => {
   it('enforces role-section permissions', () => {
     expect(canAccessSection('editor', 'news')).toBe(true);
     expect(canAccessSection('editor', 'documents')).toBe(false);
-    expect(canAccessSection('admin', 'settings')).toBe(true);
+    // Settings is a Super Admin-only section: SECTION_ACCESS lists it as
+    // ['superadmin'] and AdminSidebar renders it only inside the isSuperAdmin
+    // group. Admins must not reach it (no privilege escalation).
+    expect(canAccessSection('superadmin', 'settings')).toBe(true);
+    expect(canAccessSection('admin', 'settings')).toBe(false);
   });
 });
