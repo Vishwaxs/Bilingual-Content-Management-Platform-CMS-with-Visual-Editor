@@ -14,8 +14,8 @@ const useSystemStats = () => {
         supabase.from('contact_submissions').select('id', { count: 'exact', head: true }),
         supabase.from('membership_applications').select('id', { count: 'exact', head: true }),
         supabase.from('activity_logs').select('id', { count: 'exact', head: true }),
-        supabase.from('cms_content' as any).select('id', { count: 'exact', head: true }),
-        supabase.from('cms_content_history' as any).select('id', { count: 'exact', head: true }),
+        supabase.from('cms_content').select('id', { count: 'exact', head: true }),
+        supabase.from('cms_content_history').select('id', { count: 'exact', head: true }),
       ]);
 
       const extract = (r: PromiseSettledResult<any>) =>

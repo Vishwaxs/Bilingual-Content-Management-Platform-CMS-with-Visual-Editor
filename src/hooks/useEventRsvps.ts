@@ -38,7 +38,7 @@ export const useRsvpCount = (eventId: string) => {
     queryKey: ['rsvp-count', eventId],
     queryFn: async () => {
       const { count, error } = await supabase
-        .from('event_rsvps' as any)
+        .from('event_rsvps')
         .select('*', { count: 'exact', head: true })
         .eq('event_id', eventId);
       if (error) return 0;
@@ -62,14 +62,14 @@ export const useSubmitRsvp = () => {
       attendees_count?: number;
     }) => {
       const { error } = await supabase
-        .from('event_rsvps' as any)
+        .from('event_rsvps')
         .insert({
           event_id: rsvp.event_id,
           name: rsvp.name,
           phone: rsvp.phone,
           district: rsvp.district || null,
           attendees_count: rsvp.attendees_count || 1,
-        } as any);
+        });
       if (error) {
         if (error.code === '23505') {
           throw new Error('You have already registered for this event with this phone number.');

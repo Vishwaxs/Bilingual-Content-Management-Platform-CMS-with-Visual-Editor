@@ -21,8 +21,8 @@ export function NewsletterSignup({ variant = 'inline' }: { variant?: 'inline' | 
     setLoading(true);
     try {
       const { error } = await supabase
-        .from('email_subscribers' as any)
-        .insert({ email: email.trim().toLowerCase(), language } as any);
+        .from('email_subscribers')
+        .insert({ email: email.trim().toLowerCase(), language });
       if (error) {
         if (error.code === '23505') {
           toast.info(t('You are already subscribed!', 'आप पहले से सदस्य हैं!'));

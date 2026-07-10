@@ -44,7 +44,7 @@ export function PollWidget() {
     queryKey: ['active-poll'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('polls' as any)
+        .from('polls')
         .select('*')
         .eq('status', 'active')
         .order('created_at', { ascending: false })
@@ -65,12 +65,12 @@ export function PollWidget() {
     queryFn: async () => {
       if (!poll) return {};
       const { data, error } = await supabase
-        .from('poll_votes' as any)
+        .from('poll_votes')
         .select('option_id')
         .eq('poll_id', poll.id);
       if (error) return {};
       const counts: Record<string, number> = {};
-      (data ?? []).forEach((v: any) => {
+      (data ?? []).forEach((v) => {
         counts[v.option_id] = (counts[v.option_id] || 0) + 1;
       });
       return counts;
@@ -86,12 +86,12 @@ export function PollWidget() {
     mutationFn: async (optionId: string) => {
       if (!poll) throw new Error('No poll');
       const { error } = await supabase
-        .from('poll_votes' as any)
+        .from('poll_votes')
         .insert({
           poll_id: poll.id,
           option_id: optionId,
           voter_fingerprint: fingerprint,
-        } as any);
+        });
       if (error) {
         if (error.code === '23505') throw new Error('Already voted');
         throw error;
