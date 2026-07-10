@@ -21,7 +21,7 @@ export function EventPhotoGallery({ eventId }: { eventId: string }) {
     queryKey: ['event-photos', eventId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('event_photos' as any)
+        .from('event_photos')
         .select('*')
         .eq('event_id', eventId)
         .order('sort_order');

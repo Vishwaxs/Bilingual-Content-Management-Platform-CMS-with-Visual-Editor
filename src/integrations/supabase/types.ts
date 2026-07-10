@@ -44,6 +44,86 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_content: {
+        Row: {
+          description: string | null
+          id: string
+          is_locked: boolean
+          key: string
+          label: string
+          section: string
+          type: string
+          updated_at: string
+          updated_by: string | null
+          value: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          is_locked?: boolean
+          key: string
+          label?: string
+          section?: string
+          type?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          is_locked?: boolean
+          key?: string
+          label?: string
+          section?: string
+          type?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      cms_content_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          changed_by_email: string | null
+          content_id: string
+          id: string
+          key: string
+          new_value: string
+          old_value: string
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          content_id: string
+          id?: string
+          key: string
+          new_value?: string
+          old_value?: string
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          content_id?: string
+          id?: string
+          key?: string
+          new_value?: string
+          old_value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_content_history_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "cms_content"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -113,6 +193,27 @@ export type Database = {
         }
         Relationships: []
       }
+      email_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          language: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          language?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          language?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           cover_image: string | null
@@ -163,6 +264,79 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      event_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          event_id: string
+          id: string
+          photo_url: string
+          sort_order: number
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          event_id: string
+          id?: string
+          photo_url: string
+          sort_order?: number
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          event_id?: string
+          id?: string
+          photo_url?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_photos_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_rsvps: {
+        Row: {
+          attendees_count: number
+          created_at: string
+          district: string | null
+          event_id: string
+          id: string
+          name: string
+          phone: string
+        }
+        Insert: {
+          attendees_count?: number
+          created_at?: string
+          district?: string | null
+          event_id: string
+          id?: string
+          name: string
+          phone: string
+        }
+        Update: {
+          attendees_count?: number
+          created_at?: string
+          district?: string | null
+          event_id?: string
+          id?: string
+          name?: string
+          phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leadership_profiles: {
         Row: {
@@ -315,6 +489,65 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      poll_votes: {
+        Row: {
+          created_at: string
+          id: string
+          option_id: string
+          poll_id: string
+          voter_fingerprint: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          option_id: string
+          poll_id: string
+          voter_fingerprint?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          option_id?: string
+          poll_id?: string
+          voter_fingerprint?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "poll_votes_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      polls: {
+        Row: {
+          created_at: string
+          id: string
+          options: Json
+          question_en: string
+          question_hi: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          options?: Json
+          question_en?: string
+          question_hi?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          options?: Json
+          question_en?: string
+          question_hi?: string | null
+          status?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {

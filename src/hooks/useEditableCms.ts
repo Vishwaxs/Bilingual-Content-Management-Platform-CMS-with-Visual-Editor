@@ -9,7 +9,7 @@ export const useAllCmsContent = () => {
     queryKey: ['cms', 'all-content'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('cms_content' as any)
+        .from('cms_content')
         .select('*')
         .order('key');
       if (error) throw error;
@@ -61,17 +61,17 @@ export const useSaveCmsValue = () => {
     mutationFn: async ({ key, value }: { key: string; value: string }) => {
       // Find content row by key to get its ID
       const { data: row, error: findError } = await supabase
-        .from('cms_content' as any)
+        .from('cms_content')
         .select('id')
         .eq('key', key)
         .single();
       if (findError) throw findError;
-      const id = (row as any)?.id;
+      const id = row?.id;
       if (!id) throw new Error(`CMS key "${key}" not found`);
 
       const { error } = await supabase
-        .from('cms_content' as any)
-        .update({ value } as any)
+        .from('cms_content')
+        .update({ value })
         .eq('id', id);
       if (error) throw error;
     },

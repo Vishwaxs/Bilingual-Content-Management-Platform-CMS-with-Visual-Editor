@@ -32,7 +32,7 @@ export const useAdminCmsContent = (section?: string) => {
     queryKey: ['admin', 'cms-content', section],
     queryFn: async () => {
       let query = supabase
-        .from('cms_content' as any)
+        .from('cms_content')
         .select('*')
         .order('section', { ascending: true })
         .order('key', { ascending: true });
@@ -51,8 +51,8 @@ export const useUpdateCmsContent = () => {
   return useMutation({
     mutationFn: async ({ id, value }: { id: string; value: string }) => {
       const { data, error } = await supabase
-        .from('cms_content' as any)
-        .update({ value } as any)
+        .from('cms_content')
+        .update({ value })
         .eq('id', id)
         .select()
         .single();
@@ -72,7 +72,7 @@ export const useCmsContentHistory = (limit = 50) => {
     queryKey: ['admin', 'cms-history', limit],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('cms_content_history' as any)
+        .from('cms_content_history')
         .select('*')
         .order('changed_at', { ascending: false })
         .limit(limit);
@@ -89,8 +89,8 @@ export const useRevertCmsContent = () => {
   return useMutation({
     mutationFn: async ({ contentId, oldValue }: { contentId: string; oldValue: string }) => {
       const { data, error } = await supabase
-        .from('cms_content' as any)
-        .update({ value: oldValue } as any)
+        .from('cms_content')
+        .update({ value: oldValue })
         .eq('id', contentId)
         .select()
         .single();
@@ -111,7 +111,7 @@ export const useCmsSections = () => {
     queryKey: ['admin', 'cms-sections'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('cms_content' as any)
+        .from('cms_content')
         .select('section');
       if (error) throw error;
       const rows = (data ?? []) as unknown as { section: string }[];
