@@ -7,6 +7,7 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import { getErrorMessage } from '@/lib/utils';
 
 const EventsManager = () => {
   const { data: events, isLoading } = useAdminEventsList();
@@ -27,7 +28,7 @@ const EventsManager = () => {
       await Promise.all(ids.map(id => deleteEvent.mutateAsync(id)));
       toast.success(`${ids.length} event(s) deleted`);
       setSelected(new Set());
-    } catch (err: any) { toast.error(err.message); }
+    } catch (err: unknown) { toast.error(getErrorMessage(err, 'Bulk delete failed')); }
   };
 
   const handleDelete = (id: string) => {
