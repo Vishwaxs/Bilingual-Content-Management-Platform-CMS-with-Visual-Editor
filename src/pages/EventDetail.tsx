@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useEventBySlug } from '@/hooks/useEvents';
 import { useSubmitRsvp, useRsvpCount } from '@/hooks/useEventRsvps';
 import { sanitizeHtml } from '@/lib/security/sanitize';
+import { getErrorMessage } from '@/lib/utils';
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { format } from 'date-fns';
@@ -132,8 +133,8 @@ const EventDetailPage = () => {
                       });
                       setRsvpDone(true);
                       toast.success(t('Registration confirmed!', 'पंजीकरण सफल!'));
-                    } catch (err: any) {
-                      toast.error(err.message || t('Registration failed', 'पंजीकरण विफल'));
+                    } catch (err: unknown) {
+                      toast.error(getErrorMessage(err) || t('Registration failed', 'पंजीकरण विफल'));
                     }
                   }}
                 >

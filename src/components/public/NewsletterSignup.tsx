@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Mail, CheckCircle2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/utils';
 
 /**
  * NewsletterSignup — inline email subscription widget.
@@ -34,8 +35,8 @@ export function NewsletterSignup({ variant = 'inline' }: { variant?: 'inline' | 
         setDone(true);
         toast.success(t('Subscribed successfully!', 'सफलतापूर्वक सदस्यता ली!'));
       }
-    } catch (err: any) {
-      toast.error(err.message || t('Subscription failed', 'सदस्यता विफल'));
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err) || t('Subscription failed', 'सदस्यता विफल'));
     } finally {
       setLoading(false);
     }

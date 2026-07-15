@@ -7,6 +7,7 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import { getErrorMessage } from '@/lib/utils';
 
 const NewsManager = () => {
   const { data: news, isLoading } = useAllNews();
@@ -44,8 +45,8 @@ const NewsManager = () => {
       }
       toast.success(`${ids.length} article(s) ${action === 'delete' ? 'deleted' : action + 'ed'}`);
       setSelected(new Set());
-    } catch (err: any) {
-      toast.error(err.message || 'Bulk action failed');
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err, 'Bulk action failed'));
     }
   };
 
