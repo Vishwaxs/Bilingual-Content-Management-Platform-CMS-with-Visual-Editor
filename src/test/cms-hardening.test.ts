@@ -47,6 +47,8 @@ describe('cms hardening guards', () => {
   it('enforces role-section permissions', () => {
     expect(canAccessSection('editor', 'news')).toBe(true);
     expect(canAccessSection('editor', 'documents')).toBe(false);
-    expect(canAccessSection('admin', 'settings')).toBe(true);
+    // settings is superadmin-only per the access matrix; admin must be denied.
+    expect(canAccessSection('admin', 'settings')).toBe(false);
+    expect(canAccessSection('superadmin', 'settings')).toBe(true);
   });
 });
