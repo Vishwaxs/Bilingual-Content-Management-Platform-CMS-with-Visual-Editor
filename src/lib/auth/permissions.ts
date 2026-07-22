@@ -57,7 +57,11 @@ export const hasCmsAccess = (role: CmsRole | null): boolean => {
 
 export const canAccessSection = (role: CmsRole | null, section: CmsSection): boolean => {
   if (!role) return false;
-  return SECTION_ACCESS[section].includes(role);
+  // Fail closed: an unknown/dynamic section (e.g. from a stale route or DB
+  // value) must deny access rather than throw during render.
+  const allowedRoles = SECTION_ACCESS[section];
+  if (!allowedRoles) return false;
+  return allowedRoles.includes(role);
 };
 
 export const isSuperAdminRole = (role: CmsRole | null): boolean => {
