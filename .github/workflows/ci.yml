@@ -1,0 +1,58 @@
+name: CI
+
+# Continuous integration for the Bilingual CMS.
+#
+# The blocking gate is `build` — the one pipeline verified green on `main`.
+# Lint, type-check and unit tests are run as ADVISORY steps (continue-on-error)
+# because `main` currently has known, already-fixed-in-open-PRs debt:
+#   - lint / type errors  -> PRs #26, #30
+#   - stale RBAC test      -> PRs #32, #35
+# Once those fixes merge, promote the advisory steps to blocking by removing
+# their `continue-on-error: true` lines.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `--legacy-peer-deps` is required until the vite peer-range fix (PR #37)
+      # lands: vite@^8 conflicts with @vitejs/plugin-react-swc / vite-plugin-pwa.
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+
+      # Blocking gate: the production build must succeed.
+      - name: Build
+        run: npm run build
+
+      # --- Advisory checks (do not block until the open fix-PRs merge) ---
+      - name: Lint (advisory)
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Type-check (advisory)
+        run: npx tsc -p tsconfig.app.json --noEmit
+        continue-on-error: true
+
+      - name: Unit tests (advisory)
+        run: npm test
+        continue-on-error: true
