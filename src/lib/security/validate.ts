@@ -22,6 +22,21 @@ export const UP_DISTRICTS = [
 const mobileRegex = /^[6-9][0-9]{9}$/;
 const isValidDistrict = (value: string) => (UP_DISTRICTS as readonly string[]).includes(value);
 
+// Optional image/URL field that only permits http(s) URLs.
+// zod's .url() defers to the URL constructor, which happily accepts
+// javascript:, data: and other unsafe protocols. Route the value through
+// sanitizeUrl so these fields enforce the same http/https allowlist as
+// documentAdminSchema.file_url, then normalise the stored value.
+const optionalImageUrl = z
+  .string()
+  .trim()
+  .optional()
+  .or(z.literal(''))
+  .refine((value) => !value || sanitizeUrl(value) !== '', {
+    message: 'Only http/https image URLs are allowed',
+  })
+  .transform((value) => (value ? sanitizeUrl(value) : ''));
+
 export const contactSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters').max(100).transform(v => sanitizeText(v, 100)),
   email: z.string().trim().email('Invalid email').max(200).optional().or(z.literal('')).transform(v => v ? sanitizeEmail(v) : ''),
@@ -55,7 +70,7 @@ export const newsAdminSchema = z.object({
   meta_title_hi: z.string().max(70).optional().transform(v => v ? sanitizeText(v, 70) : undefined),
   meta_description_en: z.string().max(170).optional().transform(v => v ? sanitizeText(v, 170) : undefined),
   meta_description_hi: z.string().max(170).optional().transform(v => v ? sanitizeText(v, 170) : undefined),
-  featured_image: z.string().url().optional().or(z.literal('')),
+  featured_image: optionalImageUrl,
   status: z.enum(['draft', 'published', 'archived']),
   published_at: z.string().datetime().optional().nullable(),
 });
@@ -67,7 +82,7 @@ export const leaderAdminSchema = z.object({
   designation_hi: z.string().max(100).optional().transform(v => v ? sanitizeText(v, 100) : undefined),
   bio_en: z.string().max(1000).optional().transform(v => v ? sanitizeText(v, 1000) : undefined),
   bio_hi: z.string().max(1000).optional().transform(v => v ? sanitizeText(v, 1000) : undefined),
-  photo_url: z.string().url().optional().or(z.literal('')),
+  photo_url: optionalImageUrl,
   display_order: z.number().int().min(0).max(9999).default(999),
   is_active: z.boolean().default(true),
 });
@@ -82,7 +97,7 @@ export const eventAdminSchema = z.object({
   event_time: z.string().max(50).optional().transform(v => v ? sanitizeText(v, 50) : undefined),
   location_en: z.string().max(200).optional().transform(v => v ? sanitizeText(v, 200) : undefined),
   location_hi: z.string().max(200).optional().transform(v => v ? sanitizeText(v, 200) : undefined),
-  cover_image: z.string().url().optional().or(z.literal('')),
+  cover_image: optionalImageUrl,
   status: z.enum(['draft', 'published', 'archived']).default('draft'),
 }).superRefine((data, ctx) => {
   if (data.status === 'published' && !data.event_date) {
