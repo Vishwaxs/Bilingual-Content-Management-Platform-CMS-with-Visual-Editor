@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { safeGetItem, safeSetItem } from '@/lib/safe-storage';
 
 type Language = 'en' | 'hi';
 
@@ -16,19 +17,19 @@ const STORAGE_KEY = 'abhm-lang';
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = safeGetItem(STORAGE_KEY);
     return (stored === 'en' || stored === 'hi') ? stored : 'en';
   });
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem(STORAGE_KEY, lang);
+    safeSetItem(STORAGE_KEY, lang);
   }, []);
 
   const toggleLanguage = useCallback(() => {
     setLanguageState(prev => {
       const next = prev === 'en' ? 'hi' : 'en';
-      localStorage.setItem(STORAGE_KEY, next);
+      safeSetItem(STORAGE_KEY, next);
       return next;
     });
   }, []);
